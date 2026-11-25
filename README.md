@@ -1,52 +1,55 @@
-# Food Store — Trabajo Práctico Integrador
+#  Food Store — Trabajo Práctico Integrador
 
-**Tecnicatura Universitaria en Programación — UTN**  
+**Universidad Tecnológica Nacional (UTN)**  
+**Tecnicatura Universitaria en Programación**  
 **Materia:** Programación IV  
 **Alumno:** Gonzalo Tozzi
 
-## Descripción
+##  Descripción del proyecto
 
-Food Store es una aplicación web de pedidos de comida desarrollada con un **backend FastAPI** y un **frontend React + TypeScript**. Los clientes pueden explorar el catálogo, agregar productos al carrito, registrarse, iniciar sesión y confirmar pedidos. Los administradores cuentan con pantallas para gestionar categorías, productos, stock, pedidos y usuarios, además de consultar un resumen de la actividad.
+Food Store es una aplicación web Full Stack para la gestión de pedidos de un negocio de comidas.
 
-El frontend consume una API REST bajo `/api/v1`. La información se persiste en **PostgreSQL**. La autenticación utiliza JWT almacenado en una **cookie HttpOnly**, y los permisos se validan en el backend según el rol del usuario.
+El sistema permite a los clientes registrarse, iniciar sesión, consultar el catálogo de productos, utilizar un carrito de compras y realizar pedidos.
 
-## Tecnologías utilizadas
+También cuenta con un panel de administración para gestionar categorías, productos, stock, usuarios y pedidos, además de consultar indicadores generales del negocio.
 
-| Backend | Frontend |
-| --- | --- |
-| Python 3.11–3.13 | React 19 + TypeScript |
-| FastAPI | Vite 8 |
-| SQLModel + Pydantic | Tailwind CSS 4 |
-| PostgreSQL + psycopg2 | Axios |
-| Pydantic Settings | TanStack Query 5 |
-| JWT y bcrypt | TanStack Form 1 |
-| Repository + Unit of Work | TanStack Table 8 |
-| | React Router 7 + Zustand 5 |
+La aplicación utiliza un backend desarrollado con **FastAPI**, un frontend desarrollado con **React y TypeScript** y una base de datos **PostgreSQL**.
 
-## Funcionalidades principales
+##  Enlaces del proyecto
 
-**Cliente:**
+- **Repositorio GitHub:** https://github.com/GonzaloTozzi/FoodStore-TPI-Programacion-IV
+- **Video de demostración:** https://youtu.be/yabguAJMScA
 
-- Registro, inicio y cierre de sesión.
-- Consulta del catálogo con búsqueda, filtrado por categoría y paginación.
-- Carrito de compras persistido en el navegador.
-- Confirmación de pedidos con dirección, forma de pago y notas opcionales.
-- Consulta del historial y detalle de pedidos, y cancelación cuando su estado lo permite.
+##  Tecnologías utilizadas
 
-**Administrador:**
+### Backend
 
-- Alta, edición y baja lógica de categorías y productos.
-- Modificación del stock y disponibilidad de productos.
-- Consulta de pedidos y actualización de sus estados.
-- Listado, activación y desactivación de usuarios.
-- Panel de resumen con indicadores de pedidos e ingresos de pedidos entregados.
+- Python 3.11 o superior (hasta 3.13).
+- FastAPI.
+- SQLModel.
+- PostgreSQL.
+- Pydantic y Pydantic Settings.
+- JWT para autenticación.
+- bcrypt para contraseñas.
+- Arquitectura Repository, Service y Unit of Work.
 
-**Reglas de negocio:** los pedidos descuentan stock al crearse; si se cancelan, se restituye. Las líneas conservan el nombre y precio del producto al momento de la compra. Los estados contemplados son `PENDIENTE`, `EN_PREPARACION`, `ENTREGADO` y `CANCELADO`. La forma de pago es `EFECTIVO` o `TRANSFERENCIA` (sin pasarela de pago).
+### Frontend
 
-## Estructura del proyecto
+- React 19.
+- TypeScript.
+- Vite.
+- Tailwind CSS.
+- Axios.
+- TanStack Query.
+- TanStack Form.
+- TanStack Table.
+- React Router.
+- Zustand.
+
+##  Estructura del proyecto
 
 ```text
-FoodStore/
+TPI_Tozzi_Gonzalo/
 ├── backend/
 │   ├── app/
 │   │   ├── categoria/
@@ -59,66 +62,160 @@ FoodStore/
 │   ├── .env.example
 │   ├── requirements.txt
 │   └── ...
+│
 ├── frontend/
 │   ├── src/
 │   │   ├── features/
-│   │   ├── shared/
 │   │   ├── routes/
+│   │   ├── shared/
 │   │   └── store/
 │   ├── .env.example
 │   ├── package.json
 │   ├── pnpm-lock.yaml
 │   └── ...
+│
+├── .gitignore
 └── README.md
 ```
 
-En el backend se separan **Router → Service → Unit of Work → Repository**. El Unit of Work administra las transacciones y los repositorios acceden a los datos con SQLModel. En el frontend, los componentes están organizados por funcionalidades (*features*); **TanStack Query** administra los datos del servidor y **Zustand** administra el estado del cliente.
+##  Arquitectura del backend
 
-## Requisitos previos
+El backend está organizado en capas para separar responsabilidades.
 
-- **Python 3.11, 3.12 o 3.13**.
-- **PostgreSQL 15 o superior**, instalado y en ejecución.
-- **Node.js 20.19 o superior** y **pnpm 9 o superior**.
-- Una terminal, por ejemplo PowerShell en Windows.
+- **Router:** recibe las peticiones HTTP y devuelve las respuestas.
+- **Service:** implementa las reglas de negocio y validaciones.
+- **Repository:** realiza las operaciones sobre la base de datos utilizando SQLModel.
+- **Unit of Work:** administra las sesiones y transacciones, realizando commit o rollback según corresponda.
 
-> Los comandos siguientes se ejecutan desde la raíz del proyecto, salvo que se indique otro directorio. Se recomienda abrir **dos terminales**, una para el backend y otra para el frontend.
+Esta organización permite mantener la lógica de negocio separada del acceso a datos y de los endpoints.
 
-## 1. Configurar PostgreSQL
+El frontend está organizado por funcionalidades, utilizando componentes reutilizables, servicios de API y hooks personalizados.
 
-Crear una base de datos llamada `tpi_foodstore`. Se puede hacer desde pgAdmin o, si `psql` está disponible, con:
+##  Funcionalidades implementadas
 
-```powershell
-psql -U postgres -h localhost -c "CREATE DATABASE tpi_foodstore;"
+### Cliente
+
+- Registro e inicio de sesión.
+- Consulta del catálogo de productos.
+- Búsqueda por nombre.
+- Filtrado por categoría.
+- Paginación de productos.
+- Carrito de compras con persistencia local.
+- Confirmación de pedidos.
+- Selección de forma de pago.
+- Ingreso de dirección de entrega.
+- Historial y detalle de compras.
+- Cancelación de pedidos pendientes.
+
+### Administrador
+
+- Panel de resumen con indicadores.
+- Creación, edición y baja lógica de categorías.
+- Creación, edición y baja lógica de productos.
+- Gestión de stock y disponibilidad.
+- Consulta y administración de pedidos.
+- Actualización del estado de los pedidos.
+- Consulta, activación y desactivación de usuarios.
+
+### Reglas de negocio
+
+Al realizar un pedido, el backend valida que los productos existan, estén disponibles y tengan stock suficiente.
+
+Si la compra se confirma correctamente, se registra el pedido y se descuentan las unidades compradas del stock.
+
+Si el pedido se cancela, el sistema restituye automáticamente las unidades descontadas, evitando realizar la devolución más de una vez.
+
+Los pedidos utilizan los siguientes estados:
+
+- `PENDIENTE`
+- `EN_PREPARACION`
+- `ENTREGADO`
+- `CANCELADO`
+
+Además, cada detalle de pedido conserva el nombre y el precio del producto al momento de la compra.
+
+##  Seguridad
+
+El sistema implementa autenticación mediante JWT almacenado en una cookie HttpOnly.
+
+Las contraseñas de los usuarios se almacenan utilizando bcrypt.
+
+Se manejan dos roles:
+
+- **user:** permite consultar productos, realizar compras y administrar los pedidos propios.
+- **admin:** permite acceder a las funcionalidades administrativas.
+
+El backend verifica los permisos de cada usuario antes de ejecutar operaciones protegidas.
+
+El frontend utiliza rutas protegidas y Axios configurado con `withCredentials` para enviar las cookies de sesión.
+
+El JWT no se almacena en `localStorage`.
+
+##  Requisitos previos
+
+Para ejecutar el proyecto es necesario tener instalados:
+
+- Python 3.11, 3.12 o 3.13.
+- PostgreSQL.
+- Node.js 20.19 o superior.
+- pnpm 9 o superior.
+- Git, para clonar el repositorio.
+
+##  Instalación y ejecución
+
+### 1. Clonar el repositorio
+
+Abrir una terminal y ejecutar:
+
+```bash
+git clone https://github.com/GonzaloTozzi/FoodStore-TPI-Programacion-IV.git
+cd FoodStore-TPI-Programacion-IV
 ```
 
-Si la base ya existe, no es necesario volver a crearla.
+### 2. Crear la base de datos
 
-## 2. Instalar y ejecutar el backend
+Desde PostgreSQL o pgAdmin, crear una base de datos llamada:
 
-Desde la raíz del proyecto, ingresar a `backend`:
+```sql
+CREATE DATABASE tpi_foodstore;
+```
+
+### 3. Configurar el backend
+
+Ingresar a la carpeta del backend:
 
 ```powershell
 cd backend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
 ```
 
-En Linux/macOS, el comando para activar el entorno virtual es `source .venv/bin/activate`.
+Crear y activar un entorno virtual en Windows:
 
-Crear el archivo local de configuración a partir del ejemplo:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+Instalar las dependencias:
+
+```powershell
+pip install -r requirements.txt
+```
+
+Crear el archivo de variables de entorno:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Editar `backend/.env` y establecer los valores correspondientes a la instalación local:
+Editar el archivo `backend/.env` y configurar:
 
 ```dotenv
 DATABASE_URL=postgresql://postgres:TU_PASSWORD@localhost:5432/tpi_foodstore
-SECRET_KEY=REEMPLAZAR_POR_UNA_CLAVE_ALEATORIA_SEGURA
+
+SECRET_KEY=REEMPLAZAR_POR_UNA_CLAVE_SEGURA
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+
 FRONTEND_ORIGIN=http://localhost:5173
 
 ADMIN_USERNAME=admin
@@ -126,23 +223,37 @@ ADMIN_EMAIL=admin@foodstore.com
 ADMIN_PASSWORD=Admin1234!
 ```
 
-Reemplazar `TU_PASSWORD` por la contraseña de PostgreSQL. Para generar una clave JWT, se puede utilizar:
+Reemplazar `TU_PASSWORD` con la contraseña local de PostgreSQL.
+
+Para generar una clave JWT segura, ejecutar:
 
 ```powershell
 python -c "import secrets; print(secrets.token_hex(32))"
 ```
 
-Copiar el resultado en `SECRET_KEY`. **No publicar ni incluir `backend/.env` en la entrega**.
+Copiar la clave generada en `SECRET_KEY`.
 
-Cargar los datos iniciales:
+**Importante:** los archivos `.env` contienen datos sensibles y no deben subirse al repositorio.
+
+### 4. Inicializar los datos
+
+Ejecutar:
 
 ```powershell
 python -m app.db.seed
 ```
 
-El seed es **idempotente**: comprueba si los registros ya existen antes de crearlos. Crea el usuario administrador, tres categorías y ocho productos de ejemplo. Si el administrador ya existía, no cambia su contraseña.
+El seed carga los datos iniciales del proyecto:
 
-Iniciar la API:
+- Un usuario administrador.
+- Tres categorías.
+- Ocho productos de ejemplo.
+
+El seed es idempotente, por lo que puede ejecutarse varias veces sin duplicar registros existentes.
+
+### 5. Iniciar el backend
+
+Ejecutar:
 
 ```powershell
 uvicorn app.main:app --reload
@@ -150,20 +261,29 @@ uvicorn app.main:app --reload
 
 La API estará disponible en:
 
-- **API:** http://localhost:8000
-- **Documentación Swagger:** http://localhost:8000/docs
-- **Documentación ReDoc:** http://localhost:8000/redoc
-- **Prefijo de endpoints:** `http://localhost:8000/api/v1`
+**http://localhost:8000**
 
-> El backend debe ejecutarse con la terminal ubicada en `backend/`, para que encuentre el archivo `.env` y los módulos de `app`.
+La documentación interactiva de FastAPI se encuentra en:
 
-## 3. Instalar y ejecutar el frontend
+**http://localhost:8000/docs**
 
-En **otra terminal**, desde la raíz del proyecto:
+### 6. Configurar el frontend
+
+Abrir una segunda terminal en la raíz del proyecto e ingresar a la carpeta:
 
 ```powershell
 cd frontend
+```
+
+Instalar las dependencias:
+
+```powershell
 pnpm install
+```
+
+Crear el archivo de configuración:
+
+```powershell
 Copy-Item .env.example .env
 ```
 
@@ -173,76 +293,107 @@ Verificar que `frontend/.env` contenga:
 VITE_API_URL=http://localhost:8000/api/v1
 ```
 
-Para comprobar los tipos y generar la compilación de producción:
+### 7. Iniciar el frontend
 
-```powershell
-pnpm build
-```
-
-Para iniciar el servidor de desarrollo:
+Ejecutar:
 
 ```powershell
 pnpm dev
 ```
 
-Abrir **http://localhost:5173** en el navegador. El backend debe permanecer ejecutándose en `http://localhost:8000`.
+Abrir en el navegador:
 
-> Para instalar pnpm si aún no está disponible, se puede utilizar `npm install -g pnpm@9`.
+**http://localhost:5173**
 
-## Credenciales de prueba
+El backend debe permanecer ejecutándose mientras se utiliza el frontend.
 
-El seed configura el siguiente administrador **si no existe previamente**:
+##  Credenciales de prueba
+
+El administrador se crea automáticamente al ejecutar el seed por primera vez.
 
 | Campo | Valor |
-| --- | --- |
+|---|---|
 | Usuario | `admin` |
-| Correo | `admin@foodstore.com` |
+| Correo electrónico | `admin@foodstore.com` |
 | Contraseña | `Admin1234!` |
 | Rol | `admin` |
 
-Para utilizar el rol `user`, registrarse desde **http://localhost:5173/register**. La contraseña de administrador se utiliza solo para las pruebas del trabajo práctico.
+Para utilizar el sistema como cliente, se puede registrar una cuenta desde la pantalla de registro.
 
-## Pantallas del frontend
+Estas credenciales están destinadas únicamente a la demostración académica.
 
-| Ruta | Acceso | Descripción |
-| --- | --- | --- |
-| `/` | Público | Catálogo de productos |
-| `/login` y `/register` | Público | Inicio de sesión y registro |
-| `/carrito` | Público | Carrito de compras |
-| `/checkout` | Sesión iniciada | Confirmación del pedido |
-| `/mis-pedidos` | Sesión iniciada | Historial y cancelación |
-| `/admin/resumen` | Admin | Indicadores del negocio |
-| `/admin/categorias` | Admin | Gestión de categorías |
-| `/admin/productos` | Admin | Gestión de productos y stock |
-| `/admin/pedidos` | Admin | Gestión de pedidos |
-| `/admin/usuarios` | Admin | Gestión de usuarios |
+##  API REST
 
-## API REST
+Los endpoints principales utilizan el prefijo `/api/v1`.
 
-La especificación interactiva completa está disponible en **Swagger (`/docs`)**. Entre los endpoints principales se encuentran:
+### Autenticación
 
-- **Autenticación:** `POST /api/v1/auth/register`, `POST /api/v1/auth/token`, `POST /api/v1/auth/logout`, `GET /api/v1/auth/me`.
-- **Categorías:** `GET`, `POST`, `PUT` y `DELETE` bajo `/api/v1/categorias`.
-- **Productos:** listado y detalle, creación, edición y baja lógica bajo `/api/v1/productos`, más `PATCH /api/v1/productos/{id}/stock`.
-- **Pedidos:** `GET` y `POST /api/v1/pedidos`, `GET /api/v1/pedidos/resumen`, detalle y acciones `PATCH /api/v1/pedidos/{id}/estado` y `PATCH /api/v1/pedidos/{id}/cancelar`.
-- **Usuarios (admin):** `GET /api/v1/admin/usuarios`, `POST /api/v1/admin/usuarios/{id}/activar` y `POST /api/v1/admin/usuarios/{id}/desactivar`.
+| Método | Endpoint |
+|---|---|
+| POST | `/api/v1/auth/register` |
+| POST | `/api/v1/auth/token` |
+| POST | `/api/v1/auth/logout` |
+| GET | `/api/v1/auth/me` |
 
-Las operaciones protegidas requieren la cookie de sesión y, cuando corresponde, el rol `admin`. Axios está configurado con `withCredentials: true`; el token **no se guarda en localStorage**.
+### Categorías
 
-## Solución de problemas habituales
+| Método | Endpoint |
+|---|---|
+| GET | `/api/v1/categorias` |
+| POST | `/api/v1/categorias` |
+| PUT | `/api/v1/categorias/{id}` |
+| DELETE | `/api/v1/categorias/{id}` |
 
-- **Error de conexión a PostgreSQL:** comprobar que el servicio esté iniciado, que `tpi_foodstore` exista y que usuario y contraseña de `DATABASE_URL` sean correctos.
-- **El frontend no puede consultar la API:** comprobar que FastAPI esté iniciado, que `VITE_API_URL` apunte a `http://localhost:8000/api/v1` y que `FRONTEND_ORIGIN` coincida con la dirección real del frontend.
-- **Error 401:** iniciar sesión nuevamente; la cookie pudo haber expirado.
-- **El seed indica que el administrador ya existe:** es el comportamiento esperado; no crea duplicados ni reemplaza automáticamente su contraseña.
+### Productos
 
-## Repositorio y video de demostración
+| Método | Endpoint |
+|---|---|
+| GET | `/api/v1/productos` |
+| GET | `/api/v1/productos/{id}` |
+| POST | `/api/v1/productos` |
+| PUT | `/api/v1/productos/{id}` |
+| DELETE | `/api/v1/productos/{id}` |
+| PATCH | `/api/v1/productos/{id}/stock` |
 
-- **Repositorio público de GitHub:** `PENDIENTE: agregar URL del repositorio`.
-- **Video de demostración:** [Food Store — TPI Programación IV (YouTube)](https://youtu.be/yabguAJMScA).
+### Pedidos
 
-**Antes de entregar:** reemplazar el texto pendiente por la URL real del repositorio público y verificar en una ventana de incógnito que tanto el repositorio como el video sean accesibles sin iniciar sesión.
+| Método | Endpoint |
+|---|---|
+| GET | `/api/v1/pedidos` |
+| POST | `/api/v1/pedidos` |
+| GET | `/api/v1/pedidos/resumen` |
+| GET | `/api/v1/pedidos/{id}` |
+| PATCH | `/api/v1/pedidos/{id}/estado` |
+| PATCH | `/api/v1/pedidos/{id}/cancelar` |
+
+### Administración de usuarios
+
+| Método | Endpoint |
+|---|---|
+| GET | `/api/v1/admin/usuarios` |
+| POST | `/api/v1/admin/usuarios/{id}/activar` |
+| POST | `/api/v1/admin/usuarios/{id}/desactivar` |
+
+La documentación completa, con los esquemas de entrada y salida, puede consultarse en Swagger.
+
+##  Pruebas y demostración
+
+Durante el desarrollo se realizaron pruebas de los endpoints utilizando Swagger y archivos HTTP, verificando las principales operaciones y respuestas del backend.
+
+También se realizaron pruebas de integración desde el frontend, incluyendo autenticación, consulta de productos, creación de pedidos, actualización de estados y cancelación con restitución de stock.
+
+El video de demostración presenta el funcionamiento de Food Store desde los roles de cliente y administrador.
+
+**Video:** https://youtu.be/yabguAJMScA
+
+##  Conclusión
+
+Food Store integra los conocimientos desarrollados durante Programación IV, aplicando desarrollo Full Stack, APIs REST, persistencia relacional, autenticación, autorización, manejo del estado y arquitectura por capas.
+
+El proyecto permite cubrir el proceso completo de compra y administración de un negocio de comidas, manteniendo la consistencia de la información mediante transacciones y validaciones implementadas en el backend.
 
 ---
 
-*Trabajo Práctico Integrador de Programación IV — UTN.*
+**Trabajo Práctico Integrador — Programación IV**  
+**UTN — Tecnicatura Universitaria en Programación**  
+**Gonzalo Tozzi — 2026**
