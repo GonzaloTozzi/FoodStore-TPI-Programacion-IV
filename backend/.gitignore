@@ -1,0 +1,23 @@
+
+# Variables de entorno y credenciales
+.env
+.env.*
+!.env.example
+
+# Entorno virtual
+.venv/
+venv/
+
+# Archivos temporales de Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Archivos del editor
+.vscode/
+.idea/
+
+# Archivos temporales del proyecto
+estructura_backend.txt
+backend_revision.zip

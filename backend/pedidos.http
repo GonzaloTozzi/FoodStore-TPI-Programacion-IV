@@ -1,0 +1,124 @@
+
+### Variables
+@baseUrl = http://127.0.0.1:8000
+
+
+### 1. Listar todos los pedidos
+GET {{baseUrl}}/pedidos
+
+
+### 2. Obtener un pedido por ID
+GET {{baseUrl}}/pedidos/1
+
+
+### 3. Crear un pedido correctamente
+# Requiere productos con ID 1 y 2 existentes
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "detalles": [
+    {
+      "producto_id": 1,
+      "cantidad": 2
+    },
+    {
+      "producto_id": 2,
+      "cantidad": 3
+    }
+  ]
+}
+
+
+### 4. Actualizar el estado de un pedido
+PUT {{baseUrl}}/pedidos/1
+Content-Type: application/json
+
+{
+  "estado": "CONFIRMADO"
+}
+
+
+### 5. Eliminar un pedido (borrado lógico)
+DELETE {{baseUrl}}/pedidos/1
+
+
+### 6. Error 422 - Pedido sin detalles
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "detalles": []
+}
+
+
+### 7. Error 422 - Cantidad inválida
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "detalles": [
+    {
+      "producto_id": 1,
+      "cantidad": 0
+    }
+  ]
+}
+
+
+### 8. Error 422 - Producto repetido
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "detalles": [
+    {
+      "producto_id": 1,
+      "cantidad": 2
+    },
+    {
+      "producto_id": 1,
+      "cantidad": 3
+    }
+  ]
+}
+
+
+### 9. Error 422 - Estado inválido
+PUT {{baseUrl}}/pedidos/1
+Content-Type: application/json
+
+{
+  "estado": "EN_PREPARACION"
+}
+
+
+### 10. Error 404 - Pedido inexistente
+GET {{baseUrl}}/pedidos/99999
+
+
+### 11. Error 404 - Producto inexistente
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "detalles": [
+    {
+      "producto_id": 99999,
+      "cantidad": 1
+    }
+  ]
+}
+
+
+### 12. Error 404 - Actualizar pedido inexistente
+PUT {{baseUrl}}/pedidos/99999
+Content-Type: application/json
+
+{
+  "estado": "CONFIRMADO"
+}
+
+
+### 13. Error 404 - Eliminar pedido inexistente
+DELETE {{baseUrl}}/pedidos/99999

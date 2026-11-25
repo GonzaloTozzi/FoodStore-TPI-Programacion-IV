@@ -1,0 +1,62 @@
+
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.categoria.model import Categoria
+from app.categoria.router import router as categoria_router
+from app.core.config import settings
+from app.core.database import crear_tablas
+from app.pedidos.models import DetallePedido, Pedido
+from app.pedidos.router import router as pedidos_router
+from app.producto.model import Producto
+from app.producto.router import router as producto_router
+from app.usuarios.models import Usuario
+from app.usuarios.router import (
+    admin_router,
+)
+from app.usuarios.router import (
+    router as auth_router,
+)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    crear_tablas()
+    yield
+
+
+app = FastAPI(
+    title="Food Store - ProgramaciÃ³n IV",
+    description="API REST de Food Store con FastAPI, SQLModel, PostgreSQL y JWT",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        settings.FRONTEND_ORIGIN,
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
+app.include_router(categoria_router, prefix="/api/v1")
+app.include_router(producto_router, prefix="/api/v1")
+app.include_router(pedidos_router, prefix="/api/v1")
+app.include_router(auth_router)
+app.include_router(admin_router)
+
+
+@app.get("/")
+def inicio():
+    return {
+        "mensaje": "API Food Store funcionando"
+    }

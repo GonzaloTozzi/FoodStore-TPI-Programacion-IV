@@ -1,0 +1,13 @@
+
+target-version = "py311"
+
+[lint]
+ignore = [
+    "B008",
+    "UP017",
+    "SIM117",
+]
+
+[lint.per-file-ignores]
+"app/main.py" = ["F401"]
+"seed.py" = ["F401", "RUF100"]

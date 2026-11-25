@@ -1,0 +1,84 @@
+
+### 1. Crear categoria
+POST http://127.0.0.1:8000/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Informatica",
+  "descripcion": "Computadoras y accesorios"
+}
+
+### 2. Listar categorias
+GET http://127.0.0.1:8000/categorias
+
+### 3. Obtener categoria por ID
+GET http://127.0.0.1:8000/categorias/1
+
+### 4. Actualizar categoria
+PUT http://127.0.0.1:8000/categorias/1
+Content-Type: application/json
+
+{
+  "nombre": "Informatica y Tecnologia",
+  "descripcion": "Computadoras, perifericos y accesorios"
+}
+
+### 5. Crear producto
+POST http://127.0.0.1:8000/productos
+Content-Type: application/json
+
+{
+  "nombre": "Teclado Redragon",
+  "descripcion": "Teclado mecanico gamer",
+  "precio_base": 65000,
+  "imagenes_url": [
+    "https://ejemplo.com/teclado.jpg"
+  ],
+  "disponible": true
+}
+
+### 6. Listar productos
+GET http://127.0.0.1:8000/productos
+
+### 7. Obtener producto por ID
+GET http://127.0.0.1:8000/productos/1
+
+### 8. Actualizar producto
+PUT http://127.0.0.1:8000/productos/1
+Content-Type: application/json
+
+{
+  "nombre": "Teclado Redragon Kumara",
+  "descripcion": "Teclado mecanico con iluminacion RGB",
+  "precio_base": 75000,
+  "imagenes_url": [
+    "https://ejemplo.com/teclado.jpg"
+  ],
+  "disponible": true
+}
+
+### 9. Crear relacion ProductoCategoria
+POST http://127.0.0.1:8000/productos/1/categorias
+Content-Type: application/json
+
+{
+  "categoria_id": 1
+}
+
+### 10. Listar categorias del producto
+GET http://127.0.0.1:8000/productos/1/categorias
+
+### 11. Eliminar relacion ProductoCategoria
+DELETE http://127.0.0.1:8000/productos/1/categorias/1
+
+### 12. Eliminar producto
+DELETE http://127.0.0.1:8000/productos/1
+
+### 13. Verificar producto eliminado (404)
+GET http://127.0.0.1:8000/productos/1
+
+### 14. Eliminar categoria
+DELETE http://127.0.0.1:8000/categorias/1
+
+### 15. Verificar categoria eliminada (404)
+GET http://127.0.0.1:8000/categorias/1
